@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  name         String
+  password     String
+  userIdCreate String
+  createdAt    DateTime
+  active       Boolean
+  Logs         Log[]
+  Employee     Employee[]
+  Department   Department[]
+  Meal         Meal[]
+
+  @@map("users")
+}
+
+model Log {
+  id        Int      @id
+  module    String
+  moduleKey String
+  obs       String
+  createdAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("logs")
+}
+
+model Department {
+  id        Int        @id
+  name      String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime
+  Employee  Employee[]
+
+  @@map("departments")
+}
+
+model Employee {
+  id            Int        @id
+  name          String     @unique
+  user          User       @relation(fields: [userId], references: [id])
+  userId        String
+  createdAt     DateTime
+  department    Department @relation(fields: [departmentId], references: [id])
+  departmentId  Int
+  inactivatedAt DateTime?
+  Meal          Meal[]
+
+  @@map("employees")
+}
+
+model Meal {
+  id         Int      @id
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  dateTime   DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  employeeId Int
+
+  @@map("meals")
+}
