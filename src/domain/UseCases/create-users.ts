@@ -30,5 +30,7 @@ export class CreateUserUseCase {
     })
 
     await this.userRepository.save(userCreate)
+
+    return userCreate.getProps()
   }
 }

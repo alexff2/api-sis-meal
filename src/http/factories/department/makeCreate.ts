@@ -1,4 +1,4 @@
-import { CreateDepartmentUseCase } from '@/domain/UseCases/create-department'
+import { CreateDepartmentUseCase } from '@/domain/UseCases'
 import { DepartmentPrimsRepository } from '@/http/Repositories/Department'
 
 export function makeCreate() {

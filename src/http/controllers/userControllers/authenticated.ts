@@ -34,7 +34,9 @@ export async function authenticated(
     if (err instanceof z.ZodError || err instanceof InvalidCredentialsError) {
       return reply.status(400).send({
         message:
-          err instanceof z.ZodError ? JSON.parse(err.message) : err.message,
+          err instanceof z.ZodError
+            ? { message: 'Credentials invalid' }
+            : err.message,
       })
     }
 

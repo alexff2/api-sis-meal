@@ -4,13 +4,19 @@ import { prisma } from '@/http/lib/prisma'
 
 export class DepartmentPrimsRepository implements DepartmentRepository {
   async findByName(name: string) {
-    const department = await prisma.department.findUnique({ where: { name } })
+    const department = await prisma.department.findMany({
+      where: {
+        name: {
+          startsWith: name,
+        },
+      },
+    })
 
-    if (!department) {
-      return null
-    }
+    return department
+  }
 
-    return new Department(department)
+  async findAll() {
+    return prisma.department.findMany()
   }
 
   async maxId() {
@@ -40,7 +46,7 @@ export class DepartmentPrimsRepository implements DepartmentRepository {
       return null
     }
 
-    return new Department(department)
+    return department
   }
 
   async update(department: Department) {

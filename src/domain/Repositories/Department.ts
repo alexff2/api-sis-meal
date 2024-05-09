@@ -1,9 +1,10 @@
-import { Department } from '../Entities'
+import { Department, DepartmentProps } from '../Entities'
 
 export interface DepartmentRepository {
+  findAll: () => Promise<DepartmentProps[] | []>
+  findById: (id: number) => Promise<DepartmentProps | null>
+  findByName: (name: string) => Promise<DepartmentProps[] | []>
   create: (department: Department) => Promise<void>
-  findById: (id: number) => Promise<Department | null>
-  findByName: (name: string) => Promise<Department | null>
   update: (department: Department) => Promise<void>
   maxId: () => Promise<number>
 }

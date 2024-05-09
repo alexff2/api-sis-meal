@@ -22,7 +22,7 @@ export class CreateMealUseCase {
       throw new EmployeeNotFoundError()
     }
 
-    if (employee.getInactivatedAt()) {
+    if (employee.inactivatedAt) {
       throw new EmployeeInactiveError()
     }
 
@@ -42,5 +42,7 @@ export class CreateMealUseCase {
     })
 
     await this.mealRepository.create(meal)
+
+    return meal.getProps()
   }
 }

@@ -4,13 +4,21 @@ import { prisma } from '@/http/lib/prisma'
 
 export class EmployeePrismaRepository implements EmployeeRepository {
   async findByName(name: string) {
-    const employee = await prisma.employee.findUnique({ where: { name } })
+    const employee = await prisma.employee.findMany({
+      where: {
+        name: {
+          startsWith: name,
+        },
+      },
+    })
 
-    if (!employee) {
-      return null
-    }
+    return employee
+  }
 
-    return new Employee(employee)
+  async findByDepartment(departmentId: number) {
+    const employee = await prisma.employee.findMany({ where: { departmentId } })
+
+    return employee
   }
 
   async maxId() {
@@ -24,7 +32,7 @@ export class EmployeePrismaRepository implements EmployeeRepository {
       return Number(_max.id) + 1
     }
 
-    return 1
+    return 10000
   }
 
   async findById(id: number) {
@@ -34,7 +42,7 @@ export class EmployeePrismaRepository implements EmployeeRepository {
       return null
     }
 
-    return new Employee(employee)
+    return employee
   }
 
   async create(employee: Employee) {

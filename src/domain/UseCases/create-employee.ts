@@ -16,10 +16,9 @@ export class CreateEmployeeUseCase {
   ) {}
 
   async save({ name, departmentId, userId }: InputCreateEmployee) {
-    const employeeAlreadyExistsError =
-      await this.employeeRepository.findByName(name)
+    const employeeAlreadyExists = await this.employeeRepository.findByName(name)
 
-    if (employeeAlreadyExistsError) {
+    if (employeeAlreadyExists.length > 0) {
       throw new EmployeeAlreadyExistsError()
     }
 
@@ -37,6 +36,7 @@ export class CreateEmployeeUseCase {
       departmentId,
       userId,
       createdAt: new Date(),
+      inactivatedAt: null,
     })
 
     await this.employeeRepository.create(employee)

@@ -14,14 +14,14 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
     const createUserUseCase = makeCreateUser()
 
-    await createUserUseCase.execute({
+    const user = await createUserUseCase.execute({
       name,
       email,
       password,
       userIdCreate: request.user.sub,
     })
 
-    return reply.status(201).send()
+    return reply.status(201).send(user)
   } catch (err) {
     if (err instanceof z.ZodError) {
       return reply.status(400).send({

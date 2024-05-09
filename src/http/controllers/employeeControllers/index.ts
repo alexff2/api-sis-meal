@@ -1,4 +1,5 @@
 export * from './create'
+export * from './find'
 export * from './updateName'
 export * from './updateDepartment'
 export * from './inactive'

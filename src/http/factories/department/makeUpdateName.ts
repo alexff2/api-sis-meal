@@ -1,4 +1,4 @@
-import { UpdateDepartmentNameUseCase } from '@/domain/UseCases/update-department-name'
+import { UpdateDepartmentNameUseCase } from '@/domain/UseCases'
 import { LogPrismaRepository } from '@/http/Repositories'
 import { DepartmentPrimsRepository } from '@/http/Repositories/Department'
 

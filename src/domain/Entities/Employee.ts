@@ -1,10 +1,10 @@
-type EmployeeProps = {
+export type EmployeeProps = {
   id: number
   name: string
   departmentId: number
   userId: string
   createdAt: Date
-  inactivatedAt?: Date
+  inactivatedAt: Date | null
 }
 
 export class Employee {
