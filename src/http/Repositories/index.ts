@@ -1,2 +1,5 @@
 export * from './Log'
+export * from './Meal'
 export * from './User'
+export * from './Employee'
+export * from './Department'

@@ -1,5 +1,5 @@
 import { Meal } from '@/domain/Entities'
-import { MealRepository } from '@/domain/Repositories'
+import { MealRepository, PropsFindByDay } from '@/domain/Repositories'
 import { prisma } from '../lib/prisma'
 
 export class MealPrismaRepository implements MealRepository {
@@ -63,5 +63,18 @@ export class MealPrismaRepository implements MealRepository {
 
   async create(meal: Meal) {
     await prisma.meal.create({ data: meal.getProps() })
+  }
+
+  async findByDate({ startDate, endDate }: PropsFindByDay) {
+    const meals = await prisma.meal.findMany({
+      where: {
+        dateTime: {
+          gte: startDate.toISOString(),
+          lte: endDate.toISOString(),
+        },
+      },
+    })
+
+    return meals.map((meal) => new Meal(meal))
   }
 }

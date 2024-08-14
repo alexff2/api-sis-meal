@@ -1,6 +1,8 @@
-import { AlreadyMealError } from '@/domain/Erros'
-import { EmployeeInactiveError } from '@/domain/Erros/employee-inactive-error'
-import { EmployeeNotFoundError } from '@/domain/Erros/employee-not-found-error.ts'
+import {
+  AlreadyMealError,
+  EmployeeNotFoundError,
+  EmployeeInactiveError,
+} from '@/domain/Erros'
 import { makeFindDepartmentById } from '@/http/factories/department/makeFindById'
 import { makeFindById } from '@/http/factories/employee/makeFindById'
 import { makeCreateMeal } from '@/http/factories/meal/makeCreateMeal'

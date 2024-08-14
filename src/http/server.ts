@@ -7,6 +7,7 @@ import {
   departmentRoutes,
   employeeRoutes,
   mealRoutes,
+  reportRoutes,
 } from './routes'
 
 const app = fastify({
@@ -27,6 +28,7 @@ app.register(usersRoutes)
 app.register(departmentRoutes)
 app.register(employeeRoutes)
 app.register(mealRoutes)
+app.register(reportRoutes)
 
 app.listen({
   host: '0.0.0.0',

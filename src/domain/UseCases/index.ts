@@ -20,3 +20,5 @@ export * from './list-employee-by-id'
 export * from './list-employee-by-department'
 
 export * from './create-meal'
+
+export * from './report-meals-by-day'

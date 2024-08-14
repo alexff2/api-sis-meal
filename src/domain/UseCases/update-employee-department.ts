@@ -1,4 +1,4 @@
-import { Log } from '@/domain/Entities'
+import { Log, Employee, Department } from '@/domain/Entities'
 import { DepartmentNotFoundError, EmployeeNotFoundError } from '@/domain/Erros'
 import {
   DepartmentRepository,
@@ -7,8 +7,8 @@ import {
 } from '@/domain/Repositories'
 
 type InputUpdateEmployeeDepartment = {
-  id: number
-  departmentId: number
+  employeeId: number
+  newDepartmentId: number
   userId: string
 }
 
@@ -19,40 +19,50 @@ export class UpdateEmployeeDepartmentUseCase {
     private readonly logRepository: LogRepository,
   ) {}
 
-  async save({ id, departmentId, userId }: InputUpdateEmployeeDepartment) {
-    const employee = await this.employeeRepository.findById(id)
+  async execute({
+    employeeId,
+    newDepartmentId,
+    userId,
+  }: InputUpdateEmployeeDepartment) {
+    const employee = await this.employeeRepository.findById(employeeId)
 
     if (!employee) {
       throw new EmployeeNotFoundError()
     }
 
-    const department = await this.departmentRepository.findById(departmentId)
+    const department = await this.departmentRepository.findById(newDepartmentId)
 
     if (!department) {
       throw new DepartmentNotFoundError()
     }
 
+    const departmentEntity = new Department(department)
+
     const oldDepartment = await this.departmentRepository.findById(
-      employee.getDepartment(),
+      employee.departmentId,
     )
 
     if (!oldDepartment) {
-      console.log('Department old not found')
+      console.log('Old department not found')
       throw new DepartmentNotFoundError()
     }
 
-    employee.updateDepartment(departmentId)
+    const oldDepartmentEntity = new Department(oldDepartment)
 
-    await this.employeeRepository.update(employee)
+    employee.departmentId = newDepartmentId
+
+    const employeeEntity = new Employee(employee)
+
+    await this.employeeRepository.update(employeeEntity)
 
     const maxId = await this.logRepository.maxId()
 
     const log = new Log({
       id: maxId,
       module: 'Employee',
-      obs: `Atualização do departamento antigo ${oldDepartment.getName()} para ${department.getName()}`,
+      obs: `Atualização do departamento antigo ${oldDepartmentEntity.getName()} para ${departmentEntity.getName()}`,
       createdAt: new Date(),
-      moduleKey: String(employee.getId()),
+      moduleKey: String(employeeEntity.getId()),
       userId,
     })
 

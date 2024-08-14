@@ -3,6 +3,12 @@ import { EmployeeRepository } from '@/domain/Repositories'
 import { prisma } from '@/http/lib/prisma'
 
 export class EmployeePrismaRepository implements EmployeeRepository {
+  async findAll() {
+    const employee = await prisma.employee.findMany()
+
+    return employee
+  }
+
   async findByName(name: string) {
     const employee = await prisma.employee.findMany({
       where: {
